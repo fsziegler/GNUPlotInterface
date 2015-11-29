@@ -28,6 +28,11 @@
 *.app
 
 # Eclipse
+workspace_eclipse/.metadata/*
+workspace_eclipse/.metadata/.*
+workspace_eclipse/.metadata/*/*
+workspace_eclipse/.metadata/.*/*
+
 # No eclipse .log files
 .log
 workspace_eclipse/.metadata/.plugins/org.eclipse.cdt.core/.log
@@ -39,3 +44,4 @@ global-build.log
 .snap
 .root/*
 workspace_eclipse/.metadata/*
+
