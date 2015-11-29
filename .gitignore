@@ -28,10 +28,11 @@
 *.app
 
 # Eclipse
-workspace_eclipse/.metadata/*
-workspace_eclipse/.metadata/.*
-workspace_eclipse/.metadata/*/*
-workspace_eclipse/.metadata/.*/*
+# workspace/.metadata
+workspace/.metadata/*
+workspace/.metadata/.*
+workspace/.metadata/*/*
+workspace/.metadata/.*/*
 
 # No eclipse .log files
 .log
