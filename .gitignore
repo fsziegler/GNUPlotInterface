@@ -26,3 +26,16 @@
 *.exe
 *.out
 *.app
+
+# Eclipse
+# No eclipse .log files
+.log
+workspace_eclipse/.metadata/.plugins/org.eclipse.cdt.core/.log
+workspace_eclipse/.metadata/.plugins/org.eclipse.core.resources/.history/*
+*.pdom
+global-build.log
+.markers
+.markers.snap
+.snap
+.root/*
+workspace_eclipse/.metadata/*
