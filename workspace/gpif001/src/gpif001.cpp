@@ -107,6 +107,14 @@ void ParseCmdLineOpts(const bpo::options_description& cmdline_options,
       cout << "   UUID: " << zv::UUID << endl;
       exit(0);
    }
+   int width(600);
+   int height(400);
+   if (vm.count("width"))
+   {
+      width = vm["width"].as<int>();
+      height =
+            (0 == vm.count("height") ? width * 3 / 4 : vm["height"].as<int>());
+   }
    string inFileStr;
    if (vm.count("data"))
    {
@@ -160,18 +168,15 @@ void ParseCmdLineOpts(const bpo::options_description& cmdline_options,
       if(CreateOutputFileNameStr(*itr, outFileStr))
       {
          cout << "  " << (*itr) << " " << outFileStr << endl;
-   //gnuplot -e "set term png size 600, 400; set output "data1.png"; plot "sin1.dat" with lines"
-   //gnuplot -e "set term png size 600, 400; set output \"data1.png\"; plot \"sin_1D.dat\" with lines"
          string cmdStr("gnuplot -e \"set term ");
          cmdStr.append(*itr);
-         if(0 == (*itr).compare("dxf"))
+         if(0 != (*itr).compare("dxf"))
          {
-            cmdStr.append("; set output \\\"");
+            stringstream dimStrm;
+            dimStrm << " size " << width << ", " << height;
+            cmdStr.append(dimStrm.str());
          }
-         else
-         {
-            cmdStr.append(" size 600, 400; set output \\\"");
-         }
+         cmdStr.append("; set output \\\"");
          cmdStr.append(outFileStr);
          cmdStr.append("\\\"; plot \\\"");
          cmdStr.append(inFileStr);
@@ -192,6 +197,10 @@ int main(int ac, char* av[]) {
          ("help,h", "produce help message")
          ("data,d", bpo::value<string>(), "Input data file")
          ("format,f", bpo::value<string>(), "Output file format")
+         ("width,w", bpo::value<int>(), "Output image width (default is 4:3 "
+               "ratio)")
+         ("height,g", bpo::value<int>(), "Output image height (width must be "
+               "set)")
          ("canvas", "Output in HTML format")
          ("dxf", "Output in DXF format (default size 120x80)")
          ("gif", "Output in GIF format")
