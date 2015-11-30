@@ -42,7 +42,6 @@
 *.eps
 *.svg
 
-
 # Eclipse
 # workspace/.metadata
 workspace/.metadata/*
