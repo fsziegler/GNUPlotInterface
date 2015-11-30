@@ -70,9 +70,11 @@ history | grep gnuplot
 #include <iostream>
 #include <vector>
 #include <boost/program_options.hpp>
+#include <boost/filesystem.hpp>
 #include "ZiegVersion.h"
 
-namespace po = boost::program_options;
+namespace bpo = boost::program_options;
+namespace bfs = boost::filesystem;
 namespace zv = ZiegVersion;
 using namespace std;
 
@@ -125,8 +127,13 @@ bool ExtractFormatStr(const string& cmdOptStr, string& fmtNameStr)
    return false;
 }
 
-void ParseCmdLineOpts(const po::options_description& cmdline_options,
-      const po::variables_map& vm)
+void ExecuteOptions()
+{
+
+}
+
+void ParseCmdLineOpts(const bpo::options_description& cmdline_options,
+      const bpo::variables_map& vm)
 {
    if (vm.count("help")) {
       cout << cmdline_options << endl;
@@ -141,17 +148,26 @@ void ParseCmdLineOpts(const po::options_description& cmdline_options,
       cout << "   UUID: " << zv::UUID << endl;
       exit(0);
    }
-   if (vm.count("help,h"))
+   string inFileStr;
+   if (vm.count("data"))
    {
+      inFileStr = vm["data"].as<string>();
+      if(!bfs::exists(inFileStr))
+      {
+         cout << "The input file " << inFileStr << " does not exist." << endl;
+         exit(2);
+      }
    }
-   if (vm.count("data,d"))
+   else
    {
+      cout << "You must specify an input file with the '-d' option" << endl;
+      exit(3);
    }
    TStrVect formatVect;
    string tmpFmtNameStr;
    if (vm.count("format"))
    {
-      cout << "CHecking format" << endl;
+      cout << "Checking format" << endl;
       if(ExtractFormatStr(vm["format"].as<string>(), tmpFmtNameStr))
       {
          formatVect.push_back(tmpFmtNameStr);
@@ -170,7 +186,7 @@ void ParseCmdLineOpts(const po::options_description& cmdline_options,
    {
       if(vm.count(kFormats[cnt][0]))
       {
-         formatVect.push_back(kFormats[cnt][1]);
+         formatVect.push_back(kFormats[cnt][0]);
       }
       ++cnt;
    }
@@ -182,18 +198,28 @@ void ParseCmdLineOpts(const po::options_description& cmdline_options,
    for(auto itr = formatVect.begin(); formatVect.end() != itr; ++itr)
    {
       cout << "  " << (*itr) << endl;
+//gnuplot -e "set term png size 600, 400; set output "data1.png"; plot "sin1.dat" with lines"
+//gnuplot -e "set term png size 600, 400; set output \"data1.png\"; plot \"sin_1D.dat\" with lines"
+      string cmdStr("gnuplot -e \"set term ");
+      cmdStr.append(*itr);
+      cmdStr.append(" size 600, 400; set output \\\"data1.png\\\"; plot \\\"");
+      cmdStr.append(inFileStr);
+      cmdStr.append("\\\" with lines\"");
+      cout << "Command: [" << cmdStr << "]" << endl;
+      ::system(cmdStr.c_str());
    }
+
 }
 
 int main(int ac, char* av[]) {
    try
    {
-      po::options_description cmdline_options;
+      bpo::options_description cmdline_options;
       cmdline_options.add_options()
          ("version,v", "print version string")
          ("help,h", "produce help message")
-         ("data,d", po::value<string>(), "Input data file")
-         ("format,f", po::value<string>(), "Output file format")
+         ("data,d", bpo::value<string>(), "Input data file")
+         ("format,f", bpo::value<string>(), "Output file format")
          ("canvas", "Output in HTML format")
          ("dxf", "Output in DXF format (default size 120x80)")
          ("gif", "Output in GIF format")
@@ -202,9 +228,9 @@ int main(int ac, char* av[]) {
          ("postscript", "Output in PostScript format")
          ("svg", "Output in SVG format")
       ;
-      po::variables_map vm;
-      po::store(po::parse_command_line(ac, av, cmdline_options), vm);
-      po::notify(vm);
+      bpo::variables_map vm;
+      bpo::store(bpo::parse_command_line(ac, av, cmdline_options), vm);
+      bpo::notify(vm);
       ParseCmdLineOpts(cmdline_options, vm);
    }
    catch(exception& e)
@@ -213,9 +239,7 @@ int main(int ac, char* av[]) {
    }
    catch(...)
    {
-      cout << "Unknown exception thrown: " << endl;
+      cout << "Unknown exception thrown" << endl;
    }
-
-//   cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
 	return 0;
 }
