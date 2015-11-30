@@ -31,6 +31,18 @@
 *~
 *.tar.gz
 
+# Test files
+*.dat
+*.png
+*.html
+*.dxf
+*.gif
+*.jpeg 
+*.jpg
+*.eps
+*.svg
+
+
 # Eclipse
 # workspace/.metadata
 workspace/.metadata/*
