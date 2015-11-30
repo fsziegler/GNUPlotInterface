@@ -29,6 +29,7 @@
 
 # Backup text files
 *~
+*.tar.gz
 
 # Eclipse
 # workspace/.metadata
