@@ -31,5 +31,5 @@ sed -i -r "s/const long int UTCSeconds = [0-9]+;/const long int UTCSeconds = $(d
 sed -i -r "s/const string BuildDate = \"[0-9\-]+\";/const string BuildDate = \"$(date +%F)\";/g" ../../../code/ZiegVersion.h
 sed -i -r "s/const string BuildTime = \"[0-9\:]+\";/const string BuildTime = \"$(date +%T)\";/g" ../../../code/ZiegVersion.h
 sed -i -r "s/const string UUID = \"[0-9a-z\-]+\";/const string UUID = \"$(uuid)\";/g" ../../../code/ZiegVersion.h
-cat ../../../code/ZiegVersion.h
+# cat ../../../code/ZiegVersion.h
 pwd
