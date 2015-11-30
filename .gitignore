@@ -27,6 +27,9 @@
 *.out
 *.app
 
+# Backup text files
+*~
+
 # Eclipse
 # workspace/.metadata
 workspace/.metadata/*
