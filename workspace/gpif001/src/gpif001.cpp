@@ -111,9 +111,16 @@ void ParseCmdLineOpts(const bpo::options_description& cmdline_options,
    int height(400);
    if (vm.count("width"))
    {
-      width = vm["width"].as<int>();
-      height =
-            (0 == vm.count("height") ? width * 3 / 4 : vm["height"].as<int>());
+      if (0 == vm.count("dxf"))
+      {
+         width = vm["width"].as<int>();
+         height =
+               (0 == vm.count("height") ? width * 3 / 4 : vm["height"].as<int>());
+      }
+      else
+      {
+         cout << "DXF format current only supports 120x80 output." << endl;
+      }
    }
    string inFileStr;
    if (vm.count("data"))
@@ -195,10 +202,12 @@ int main(int ac, char* av[]) {
       cmdline_options.add_options()
          ("version,v", "print version string")
          ("help,h", "produce help message")
-         ("data,d", bpo::value<string>(), "Input data file")
-         ("format,f", bpo::value<string>(), "Output file format")
+         ("data,d", bpo::value<string>(), "Input data file (required)")
+         ("format,f", bpo::value<string>(), "Output file format (default is "
+               "PNG)")
          ("width,w", bpo::value<int>(), "Output image width (default is 4:3 "
-               "ratio)")
+               "ratio). The image will normally be 600 x 400 if no width is "
+               "specified.")
          ("height,g", bpo::value<int>(), "Output image height (width must be "
                "set)")
          ("canvas", "Output in HTML format")
