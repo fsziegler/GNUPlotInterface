@@ -33,6 +33,7 @@
 
 # Test files
 *.dat
+*.csv
 *.png
 *.html
 *.dxf

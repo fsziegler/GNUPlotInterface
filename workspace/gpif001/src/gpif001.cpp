@@ -137,6 +137,17 @@ void ParseCmdLineOpts(const bpo::options_description& cmdline_options,
       cout << "You must specify an input file with the '-d' option" << endl;
       exit(3);
    }
+   int numColumns(1);
+   if (vm.count("columns"))
+   {
+      numColumns = vm["columns"].as<int>();
+   }
+   string delimChr(" ");
+   if (vm.count("delimiter"))
+   {
+      delimChr = vm["delimiter"].as<string>();
+   }
+
    TStrVect formatVect;
    string tmpFmtNameStr;
    if (vm.count("format"))
@@ -185,9 +196,31 @@ void ParseCmdLineOpts(const bpo::options_description& cmdline_options,
          }
          cmdStr.append("; set output \\\"");
          cmdStr.append(outFileStr);
-         cmdStr.append("\\\"; plot \\\"");
+         cmdStr.append("\\\";");
+         if (vm.count("delimiter"))
+         {
+            cmdStr.append("set datafile separator \\\"");
+            cmdStr.append(delimChr);
+            cmdStr.append("\\\";");
+         }
+         cmdStr.append("plot \\\"");
+//
          cmdStr.append(inFileStr);
-         cmdStr.append("\\\" with lines\"");
+         if(1 == numColumns)
+         {
+            cmdStr.append("\\\" with lines\"");
+         }
+         else
+         {
+            cmdStr.append("\\\" using 1");
+            for(int i=2; i<=numColumns; ++i)
+            {
+               stringstream strm;
+               strm << ":" << i;
+               cmdStr.append(strm.str());
+            }
+            cmdStr.append(" with lines\"");
+         }
          cout << "Command: [" << cmdStr << "]" << endl;
          ::system(cmdStr.c_str());
       }
@@ -203,6 +236,10 @@ int main(int ac, char* av[]) {
          ("version,v", "print version string")
          ("help,h", "produce help message")
          ("data,d", bpo::value<string>(), "Input data file (required)")
+         ("columns,c", bpo::value<int>(), "Number of columns in input data "
+               "file")
+         ("delimiter", bpo::value<string>(), "Column separator in input data "
+               "file")
          ("format,f", bpo::value<string>(), "Output file format (default is "
                "PNG)")
          ("width,w", bpo::value<int>(), "Output image width (default is 4:3 "
