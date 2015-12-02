@@ -1,0 +1,78 @@
+{  
+   "Comment":"Capitalized tags are descriptive, lowercase tags match gnuplot option names",
+   "Canvas":{  
+      "Comment":"Canvas is the entire area addressable by gnuplot. On a desktop it is a full window; on a plotter, it is a single sheet of paper; in svga mode it is the full monitor screen",
+      "size":[  
+         0.5,
+         0.5
+      ]
+   },
+   "Plot":{  
+      "Comment0":"A plot contains one \"graph\". A graph is defined by an abscissa and an ordinate, although these need not actually appear on it.",
+      "Comment1":"A graph may contain one or more \"lines\". A line is a single function or data set. \"Line\" is also a plotting style. The word will also be used in sense \"a line of text\"",
+      "title":"Plot Title",
+      "Style" : {
+         "boxerrorbars" : {
+            "boxwidth" : -2.0
+         },
+         "boxes" : {
+            "boxwidth" : -2.0,
+            "fill" : "solid 1.0",
+            "pattern" : 1
+         },
+         "boxplot" : {
+            "boxwidth" : -2.0,
+            "style" : "",
+            "bars" : "",
+            "boxwidth": "",
+            "fillstyle": "",
+            "candlesticks" : "",
+            "lt" : {"rgb" : "blue"}
+         },
+         "boxxyerrorbars" : {
+            "linetype" : 4
+         },
+         "candlestick" : {
+            "Comment" : "See http://www.gnuplot.info/demo/candlesticks.html"
+         }
+      }
+   },
+   "Line":{  
+      "title":"Line Title"
+   },
+   "Key":{  
+      "title":"Key Title"
+   },
+   "Input":{  
+      "Files":[  
+         "sin_2D.dat"
+      ],
+      "Columns":[  
+         1,
+         2
+      ],
+      "separator":","
+   },
+   "term":{  
+      "libgd":{  
+         "Comment":"libgd settings work for png, gif, and tif formats",
+         "font":"arial,11",
+         "Size":"medium"
+      },
+      "postscript":{  
+         "font":"Times-Roman",
+         "Size":12
+      },
+      "format":[  
+         "canvas",
+         "dxf",
+         "gif",
+         "jpeg",
+         "png",
+         "postscript",
+         "svg"
+      ],
+      "width":"600",
+      "height":"400"
+   }
+}

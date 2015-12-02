@@ -197,6 +197,10 @@ void ParseCmdLineOpts(const bpo::options_description& cmdline_options,
          cmdStr.append("; set output \\\"");
          cmdStr.append(outFileStr);
          cmdStr.append("\\\";");
+         if(vm.count("grid"))
+         {
+            cmdStr.append("set grid;");
+         }
          if (vm.count("delimiter"))
          {
             cmdStr.append("set datafile separator \\\"");
@@ -228,6 +232,8 @@ void ParseCmdLineOpts(const bpo::options_description& cmdline_options,
 
 }
 
+// TODO Convert GPS time-in-week to value gnuplot understands
+
 int main(int ac, char* av[]) {
    try
    {
@@ -254,6 +260,7 @@ int main(int ac, char* av[]) {
          ("png", "Output in PNG images (uses libgd and TrueType fonts)")
          ("postscript", "Output in PostScript format")
          ("svg", "Output in SVG format")
+         ("grid", "Show grid in plot")
       ;
       bpo::variables_map vm;
       bpo::store(bpo::parse_command_line(ac, av, cmdline_options), vm);
